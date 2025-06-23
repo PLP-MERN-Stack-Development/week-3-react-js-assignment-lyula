@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import TaskManager from "./components/TaskManager";
+import ApiData from "./components/ApiData";
 
 function App() {
   return (
@@ -7,6 +8,7 @@ function App() {
       <Routes>
         <Route path="/" element={<TaskManager />} />
         <Route path="/about" element={<h1 className="text-3xl font-bold text-blue-600 text-center pt-10">About</h1>} />
+        <Route path="/api" element={<ApiData />} />
       </Routes>
     </div>
   );
