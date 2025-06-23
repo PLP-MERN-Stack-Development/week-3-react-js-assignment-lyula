@@ -53,7 +53,7 @@ function TaskManager() {
     <Card title="Task Manager">
       <div className="flex gap-2 mb-4">
         <input
-          className="border rounded px-2 py-1 flex-grow"
+          className="border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 flex-grow focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
           value={newTaskText}
           onChange={(e) => setNewTaskText(e.target.value)}
           placeholder="Add a new task"
@@ -81,18 +81,20 @@ function TaskManager() {
           Completed
         </Button>
       </div>
-      <ul>
+      <ul className="space-y-2">
         {filteredTasks.length === 0 && (
-          <li className="text-gray-500">No tasks</li>
+          <li className="text-gray-400 text-center">No tasks</li>
         )}
         {filteredTasks.map((task) => (
           <li
             key={task.id}
-            className="flex items-center justify-between py-1 border-b"
+            className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-lg px-4 py-2 shadow-sm transition group hover:scale-[1.02]"
           >
             <span
-              className={`flex-1 cursor-pointer ${
-                task.completed ? 'line-through text-gray-400' : ''
+              className={`flex-1 cursor-pointer select-none transition-colors duration-200 ${
+                task.completed
+                  ? 'line-through text-gray-400'
+                  : 'text-gray-800 dark:text-white'
               }`}
               onClick={() => toggleTask(task.id)}
             >

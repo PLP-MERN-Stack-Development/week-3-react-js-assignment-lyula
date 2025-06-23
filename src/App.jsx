@@ -1,16 +1,24 @@
 import { Routes, Route } from 'react-router-dom';
 import TaskManager from "./components/TaskManager";
 import ApiData from "./components/ApiData";
+import Layout from "./components/Layout";
+import Hero from "./components/Hero";
+import About from "./components/About";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <Layout>
       <Routes>
-        <Route path="/" element={<TaskManager />} />
-        <Route path="/about" element={<h1 className="text-3xl font-bold text-blue-600 text-center pt-10">About</h1>} />
+        <Route path="/" element={
+          <div className="w-full">
+            <Hero />
+            <TaskManager />
+          </div>
+        } />
+        <Route path="/about" element={<About />} />
         <Route path="/api" element={<ApiData />} />
       </Routes>
-    </div>
+    </Layout>
   );
 }
 

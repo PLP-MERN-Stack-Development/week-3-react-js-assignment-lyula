@@ -33,13 +33,17 @@ function ApiData() {
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
-      {loading && <div className="text-blue-600">Loading...</div>}
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <span className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></span>
+        </div>
+      )}
       {error && <div className="text-red-600">{error}</div>}
-      <ul>
+      <ul className="grid gap-4 sm:grid-cols-2">
         {filtered.map((item) => (
-          <li key={item.id} className="mb-2 border-b pb-2">
-            <div className="font-bold">{item.title}</div>
-            <div className="text-gray-600">{item.body}</div>
+          <li key={item.id} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 shadow group hover:scale-[1.02] transition">
+            <div className="font-bold text-lg text-blue-700 dark:text-blue-300 mb-1">{item.title}</div>
+            <div className="text-gray-600 dark:text-gray-300">{item.body}</div>
           </li>
         ))}
       </ul>
