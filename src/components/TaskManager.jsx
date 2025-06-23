@@ -1,34 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from './Button';
 import Card from './Card';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 /**
- * Custom hook for managing tasks with localStorage persistence
+ * TaskManager component for managing tasks
  */
-const useLocalStorageTasks = () => {
-  // Initialize state from localStorage or with empty array
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem('tasks');
-    return savedTasks ? JSON.parse(savedTasks) : [];
+function TaskManager() {
+  const [tasks, setTasks] = useLocalStorage('tasks', []);
+  const [newTaskText, setNewTaskText] = useState('');
+  const [filter, setFilter] = useState('all');
+
+  // Filter tasks based on selected filter
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === 'active') return !task.completed;
+    if (filter === 'completed') return task.completed;
+    return true; // 'all' filter
   });
 
-  // Update localStorage when tasks change
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
-
-  // Add a new task
-  const addTask = (text) => {
-    if (text.trim()) {
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newTaskText.trim()) {
       setTasks([
         ...tasks,
         {
           id: Date.now(),
-          text,
+          text: newTaskText,
           completed: false,
           createdAt: new Date().toISOString(),
         },
       ]);
+      setNewTaskText('');
     }
   };
 
@@ -46,31 +49,6 @@ const useLocalStorageTasks = () => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  return { tasks, addTask, toggleTask, deleteTask };
-};
-
-/**
- * TaskManager component for managing tasks
- */
-const TaskManager = () => {
-  const { tasks, addTask, toggleTask, deleteTask } = useLocalStorageTasks();
-  const [newTaskText, setNewTaskText] = useState('');
-  const [filter, setFilter] = useState('all');
-
-  // Filter tasks based on selected filter
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === 'active') return !task.completed;
-    if (filter === 'completed') return task.completed;
-    return true; // 'all' filter
-  });
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addTask(newTaskText);
-    setNewTaskText('');
-  };
-
   return (
     <Card title="Task Manager">
       <div className="flex gap-2 mb-4">
@@ -79,7 +57,7 @@ const TaskManager = () => {
           value={newTaskText}
           onChange={(e) => setNewTaskText(e.target.value)}
           placeholder="Add a new task"
-          onKeyDown={(e) => e.key === 'Enter' && addTask()}
+          onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
         />
         <Button onClick={handleSubmit}>Add</Button>
       </div>
